@@ -1,1121 +1,855 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>Ali Cafe - Guindy</title>
-
-  <!-- GOOGLE FONT -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ali Cafe - Guindy | Order Summary & Menu</title>
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    html{
-      scroll-behavior:smooth;
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 95px; /* Leaves space for fixed navbar */
     }
 
-    body{
-      font-family:'Poppins',sans-serif;
-      background:linear-gradient(135deg,#d48a50,#f7d8ba);
-      min-height:100vh;
-      padding:20px;
-      overflow-x:hidden;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d48a50, #f7d8ba);
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+      padding-top: 20px;
     }
 
-    /* ========================= */
     /* MAIN WRAPPER */
-    /* ========================= */
-
-    .menu-wrapper{
-
-      width:100%;
-      max-width:1250px;
-
-      margin:auto;
-
-      background:#f8efe4;
-
-      border-radius:30px;
-
-      overflow:hidden;
-
-      position:relative;
-
-      box-shadow:0 20px 60px rgba(0,0,0,0.25);
-
-      animation:fadeIn 1s ease;
-
+    .menu-wrapper {
+      width: 100%;
+      max-width: 1250px;
+      margin: auto;
+      background: #f8efe4;
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 1s ease;
     }
 
-    .menu-wrapper::before{
-
-      content:'';
-
-      position:absolute;
-
-      width:320px;
-
-      height:320px;
-
-      background:#6d2f0d;
-
-      border-radius:50%;
-
-      top:-120px;
-
-      left:-120px;
-
-      opacity:0.12;
-
+    .menu-wrapper::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: #6d2f0d;
+      border-radius: 50%;
+      top: -120px;
+      left: -120px;
+      opacity: 0.12;
+      pointer-events: none;
     }
 
-    .menu-wrapper::after{
-
-      content:'';
-
-      position:absolute;
-
-      width:250px;
-
-      height:250px;
-
-      background:#f4a460;
-
-      border-radius:50%;
-
-      bottom:-100px;
-
-      right:-100px;
-
-      opacity:0.15;
-
+    .menu-wrapper::after {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background: #f4a460;
+      border-radius: 50%;
+      bottom: -100px;
+      right: -100px;
+      opacity: 0.15;
+      pointer-events: none;
     }
 
-    /* ========================= */
-    /* HEADER */
-    /* ========================= */
-
-    .header{
-
-      background:#4a1d08;
-
-      color:white;
-
-      text-align:center;
-
-      padding:30px 20px 20px;
-
-      position:relative;
-
-      overflow:hidden;
-
+    /* ========= FIXED NAVIGATION BAR (with search & category dropdown) ========= */
+    .fixed-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #4a1d08;
+      backdrop-filter: blur(0px);
+      z-index: 1000;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      padding: 12px 24px;
+      transition: all 0.2s;
     }
 
-    .header h1{
-
-      font-size:3rem;
-
-      font-weight:800;
-
-      letter-spacing:1px;
-
-      position:relative;
-
-      z-index:2;
-
-      animation:slideDown 1s ease;
-
+    .nav-container {
+      max-width: 1250px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
     }
 
-    .header p{
-
-      margin-top:10px;
-
-      font-size:1rem;
-
-      opacity:0.9;
-
+    .nav-logo {
+      color: white;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      background: rgba(255,255,255,0.1);
+      padding: 5px 12px;
+      border-radius: 40px;
+      white-space: nowrap;
     }
 
-    .header::before{
-
-      content:'☕';
-
-      position:absolute;
-
-      left:40px;
-
-      top:20px;
-
-      font-size:60px;
-
-      opacity:0.15;
-
-      animation:float 4s infinite ease-in-out;
-
+    .nav-logo span {
+      font-size: 1.2rem;
     }
 
-    .header::after{
-
-      content:'🍔';
-
-      position:absolute;
-
-      right:40px;
-
-      top:20px;
-
-      font-size:60px;
-
-      opacity:0.15;
-
-      animation:float 5s infinite ease-in-out;
-
+    .nav-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* ========================= */
-    /* CATEGORY NAVIGATION */
-    /* ========================= */
-
-    .category-nav{
-
-      width:100%;
-
-      display:flex;
-
-      justify-content:center;
-
-      align-items:center;
-
-      gap:14px;
-
-      flex-wrap:wrap;
-
-      margin-top:25px;
-
-      padding:0 10px 10px;
-
-      position:relative;
-
-      z-index:10;
-
+    .search-box {
+      background: white;
+      border-radius: 40px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .nav-btn{
-
-      text-decoration:none;
-
-      background:white;
-
-      color:#4a1d08;
-
-      padding:12px 22px;
-
-      border-radius:40px;
-
-      font-weight:700;
-
-      transition:0.35s ease;
-
-      box-shadow:0 8px 18px rgba(0,0,0,0.12);
-
-      border:2px solid transparent;
-
-      font-size:1rem;
-
+    .search-box input {
+      border: none;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      width: 150px;
+      background: transparent;
     }
 
-    .nav-btn:hover{
-
-      background:#4a1d08;
-
-      color:white;
-
-      transform:translateY(-4px);
-
-      border-color:#f4a460;
-
+    .search-box span {
+      font-size: 1rem;
+      color: #4a1d08;
     }
 
-    .active-nav{
-
-      background:#4a1d08;
-
-      color:white;
-
-      border-color:#f4a460;
-
+    .category-dropdown select {
+      padding: 8px 16px;
+      border-radius: 40px;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      background: white;
+      color: #4a1d08;
+      cursor: pointer;
+      font-size: 0.85rem;
+      outline: none;
     }
 
-    /* ========================= */
-    /* MAIN CONTENT */
-    /* ========================= */
-
-    .menu-content{
-
-      display:grid;
-
-      grid-template-columns:1fr 1fr;
-
-      gap:30px;
-
-      padding:35px;
-
-      position:relative;
-
-      z-index:2;
-
+    /* cart summary badge (small pill) */
+    .order-badge {
+      background: #f4a460;
+      color: #4a1d08;
+      border-radius: 40px;
+      padding: 6px 14px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .menu-section{
-
-      background:rgba(255,255,255,0.7);
-
-      backdrop-filter:blur(10px);
-
-      border-radius:25px;
-
-      padding:28px;
-
-      position:relative;
-
-      overflow:hidden;
-
-      transition:0.4s ease;
-
-      border:1px solid rgba(255,255,255,0.4);
-
+    .order-badge:hover {
+      background: #ffb347;
+      transform: scale(1.02);
     }
 
-    .menu-section:hover{
-
-      transform:translateY(-8px);
-
-      box-shadow:0 18px 40px rgba(0,0,0,0.15);
-
+    body {
+      padding-top: 95px;
     }
 
-    .section-title{
-
-      font-size:2rem;
-
-      color:#4a1d08;
-
-      margin-bottom:20px;
-
-      font-weight:800;
-
-      display:flex;
-
-      align-items:center;
-
-      gap:10px;
-
+    /* HEADER inside wrapper - adjusted */
+    .header {
+      background: #4a1d08;
+      color: white;
+      text-align: center;
+      padding: 30px 20px 20px;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* ========================= */
-    /* IMAGES */
-    /* ========================= */
-
-    .food-image{
-
-      width:100%;
-
-      height:240px;
-
-      object-fit:cover;
-
-      border-radius:22px;
-
-      margin-bottom:22px;
-
-      transition:0.5s ease;
-
-      box-shadow:0 10px 25px rgba(0,0,0,0.18);
-
-      display:block;
-
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 2;
+      animation: slideDown 1s ease;
     }
 
-    .food-image:hover{
-
-      transform:scale(1.04);
-
+    .header p {
+      margin-top: 10px;
+      font-size: 1rem;
+      opacity: 0.9;
     }
 
-    /* ========================= */
-    /* CATEGORY */
-    /* ========================= */
-
-    .category{
-
-      margin-bottom:28px;
-
-      scroll-margin-top:40px;
-
+    .header::before {
+      content: '☕';
+      position: absolute;
+      left: 40px;
+      top: 20px;
+      font-size: 60px;
+      opacity: 0.15;
+      animation: float 4s infinite ease-in-out;
     }
 
-    .category h3{
-
-      color:#8b4513;
-
-      margin-bottom:14px;
-
-      font-size:1.35rem;
-
-      padding-left:12px;
-
-      border-left:5px solid #d48a50;
-
-      font-weight:700;
-
+    .header::after {
+      content: '🍔';
+      position: absolute;
+      right: 40px;
+      top: 20px;
+      font-size: 60px;
+      opacity: 0.15;
+      animation: float 5s infinite ease-in-out;
     }
 
-    /* ========================= */
-    /* MENU ITEMS */
-    /* ========================= */
-
-    .menu-item{
-
-      display:flex;
-
-      justify-content:space-between;
-
-      align-items:center;
-
-      padding:12px 0;
-
-      border-bottom:1px dashed rgba(0,0,0,0.15);
-
-      transition:0.3s ease;
-
+    /* original category nav (quick links) but we keep it for design */
+    .category-nav {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+      padding: 0 10px 10px;
+      position: relative;
+      z-index: 10;
     }
 
-    .menu-item:hover{
-
-      transform:translateX(8px);
-
-      color:#8b4513;
-
+    .nav-btn {
+      text-decoration: none;
+      background: white;
+      color: #4a1d08;
+      padding: 12px 22px;
+      border-radius: 40px;
+      font-weight: 700;
+      transition: 0.35s ease;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      border: 2px solid transparent;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-block;
     }
 
-    .menu-item span{
-
-      font-size:1rem;
-
-      font-weight:500;
-
+    .nav-btn:hover {
+      background: #4a1d08;
+      color: white;
+      transform: translateY(-4px);
+      border-color: #f4a460;
     }
 
-    .price{
-
-      color:#4a1d08;
-
-      font-weight:700;
-
-      background:#f6dfc7;
-
-      padding:5px 12px;
-
-      border-radius:20px;
-
-      transition:0.3s ease;
-
+    .active-nav {
+      background: #4a1d08;
+      color: white;
+      border-color: #f4a460;
     }
 
-    .menu-item:hover .price{
-
-      background:#4a1d08;
-
-      color:white;
-
+    /* menu content grid */
+    .menu-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 35px;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ========================= */
-    /* FOOTER */
-    /* ========================= */
-
-    .footer{
-
-      background:#4a1d08;
-
-      color:white;
-
-      text-align:center;
-
-      padding:20px 15px;
-
-      font-size:0.95rem;
-
-      position:relative;
-
-      z-index:2;
-
+    .menu-section {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: 0.4s ease;
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    .footer p{
-
-      margin:6px 0;
-
-      word-break:break-word;
-
+    .menu-section:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
     }
 
-    /* ========================= */
-    /* FLOATING ICONS */
-    /* ========================= */
-
-    .floating{
-
-      position:absolute;
-
-      font-size:2rem;
-
-      opacity:0.12;
-
-      z-index:1;
-
-      animation:float 5s infinite ease-in-out;
-
+    .section-title {
+      font-size: 2rem;
+      color: #4a1d08;
+      margin-bottom: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .f1{
-
-      top:180px;
-
-      left:40px;
-
+    .food-image {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 22px;
+      margin-bottom: 22px;
+      transition: 0.5s ease;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+      display: block;
     }
 
-    .f2{
-
-      top:400px;
-
-      right:50px;
-
-      animation-delay:1s;
-
+    .food-image:hover {
+      transform: scale(1.04);
     }
 
-    .f3{
-
-      bottom:120px;
-
-      left:45%;
-
-      animation-delay:2s;
-
+    .category {
+      margin-bottom: 28px;
+      scroll-margin-top: 40px;
     }
 
-    /* ========================= */
-    /* GO TOP BUTTON */
-    /* ========================= */
-
-    .top-btn{
-
-      position:fixed;
-
-      bottom:25px;
-
-      right:25px;
-
-      width:55px;
-
-      height:55px;
-
-      border:none;
-
-      border-radius:50%;
-
-      background:#4a1d08;
-
-      color:white;
-
-      font-size:1.5rem;
-
-      cursor:pointer;
-
-      display:flex;
-
-      justify-content:center;
-
-      align-items:center;
-
-      box-shadow:0 10px 25px rgba(0,0,0,0.2);
-
-      transition:0.3s ease;
-
-      opacity:0;
-
-      visibility:hidden;
-
-      z-index:1000;
-
+    .category h3 {
+      color: #8b4513;
+      margin-bottom: 14px;
+      font-size: 1.35rem;
+      padding-left: 12px;
+      border-left: 5px solid #d48a50;
+      font-weight: 700;
     }
 
-    .top-btn.show{
-
-      opacity:1;
-
-      visibility:visible;
-
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+      transition: 0.3s ease;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .top-btn:hover{
-
-      transform:translateY(-5px) scale(1.08);
-
-      background:#8b4513;
-
+    .menu-item:hover {
+      transform: translateX(8px);
+      color: #8b4513;
     }
 
-    /* ========================= */
-    /* ANIMATIONS */
-    /* ========================= */
-
-    @keyframes fadeIn{
-
-      from{
-
-        opacity:0;
-
-        transform:scale(0.95);
-
-      }
-
-      to{
-
-        opacity:1;
-
-        transform:scale(1);
-
-      }
-
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    @keyframes slideDown{
-
-      from{
-
-        opacity:0;
-
-        transform:translateY(-30px);
-
-      }
-
-      to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-      }
-
+    .item-name {
+      font-size: 1rem;
+      font-weight: 500;
     }
 
-    @keyframes float{
-
-      0%,100%{
-
-        transform:translateY(0);
-
-      }
-
-      50%{
-
-        transform:translateY(-15px);
-
-      }
-
+    .price {
+      color: #4a1d08;
+      font-weight: 700;
+      background: #f6dfc7;
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: 0.3s ease;
     }
 
-    /* ========================= */
-    /* RESPONSIVE */
-    /* ========================= */
-
-    @media(max-width:950px){
-
-      .menu-content{
-
-        grid-template-columns:1fr;
-
-      }
-
-      .header h1{
-
-        font-size:2.4rem;
-
-      }
-
-      .food-image{
-
-        height:220px;
-
-      }
-
+    .add-to-cart {
+      background: #4a1d08;
+      color: white;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    @media(max-width:600px){
-
-      body{
-
-        padding:10px;
-
-      }
-
-      .header{
-
-        padding:22px 15px;
-
-      }
-
-      .header h1{
-
-        font-size:1.9rem;
-
-        line-height:1.3;
-
-      }
-
-      .header p{
-
-        font-size:0.9rem;
-
-      }
-
-      .category-nav{
-
-        gap:10px;
-
-        margin-top:18px;
-
-      }
-
-      .nav-btn{
-
-        font-size:0.82rem;
-
-        padding:10px 14px;
-
-      }
-
-      .menu-content{
-
-        padding:18px;
-
-        gap:20px;
-
-      }
-
-      .menu-section{
-
-        padding:20px;
-
-        border-radius:20px;
-
-      }
-
-      .section-title{
-
-        font-size:1.6rem;
-
-      }
-
-      .category h3{
-
-        font-size:1.1rem;
-
-      }
-
-      .menu-item span{
-
-        font-size:0.92rem;
-
-      }
-
-      .food-image{
-
-        height:190px;
-
-      }
-
-      .price{
-
-        padding:4px 10px;
-
-        font-size:0.9rem;
-
-      }
-
-      .top-btn{
-
-        width:48px;
-
-        height:48px;
-
-        font-size:1.2rem;
-
-        right:15px;
-
-        bottom:15px;
-
-      }
-
-      .footer{
-
-        padding:16px 10px;
-
-        font-size:0.85rem;
-
-      }
-
-      .footer p{
-
-        margin:4px 0;
-
-        line-height:1.5;
-
-      }
-
+    .add-to-cart:hover {
+      background: #8b4513;
+      transform: scale(1.02);
     }
 
+    /* ORDER PANEL (side sheet style) */
+    .order-panel {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 340px;
+      max-width: calc(100% - 40px);
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+      z-index: 1050;
+      font-family: 'Poppins', sans-serif;
+      transition: 0.25s ease;
+      border: 1px solid rgba(74, 29, 8, 0.2);
+      backdrop-filter: blur(2px);
+    }
+
+    .order-header {
+      background: #4a1d08;
+      color: white;
+      padding: 16px 18px;
+      border-radius: 28px 28px 0 0;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    .order-list {
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 12px;
+      background: #fff9f2;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 5px;
+      border-bottom: 1px solid #f0e0d0;
+      font-size: 0.85rem;
+      align-items: center;
+    }
+
+    .order-item-details {
+      flex: 1;
+    }
+
+    .remove-item {
+      background: #f3d9c6;
+      border: none;
+      border-radius: 30px;
+      padding: 4px 12px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #8b4513;
+      font-size: 0.7rem;
+      transition: 0.2s;
+    }
+
+    .total-row {
+      font-weight: 800;
+      background: #f7e5d4;
+      padding: 12px;
+      border-radius: 20px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: #a07a5c;
+      padding: 20px;
+      font-style: italic;
+    }
+
+    .footer {
+      background: #4a1d08;
+      color: white;
+      text-align: center;
+      padding: 20px 15px;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .floating {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.12;
+      z-index: 1;
+      animation: float 5s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    .f1 { top: 180px; left: 40px; }
+    .f2 { top: 400px; right: 50px; animation-delay: 1s; }
+    .f3 { bottom: 120px; left: 45%; animation-delay: 2s; }
+
+    .top-btn {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      width: 55px;
+      height: 55px;
+      border: none;
+      border-radius: 50%;
+      background: #4a1d08;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition: 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1000;
+    }
+
+    .top-btn.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0);}
+      50% { transform: translateY(-15px);}
+    }
+
+    @media (max-width: 950px) {
+      .menu-content { grid-template-columns: 1fr; }
+      .header h1 { font-size: 2.4rem; }
+      .food-image { height: 220px; }
+      .fixed-navbar { padding: 10px 16px; }
+      .nav-container { flex-direction: column; align-items: stretch; }
+      .nav-controls { justify-content: space-between; }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; padding-top: 130px; }
+      .header { padding: 22px 15px; }
+      .header h1 { font-size: 1.9rem; }
+      .menu-content { padding: 18px; gap: 20px; }
+      .order-panel { width: 300px; right: 10px; bottom: 10px; }
+      .top-btn { width: 48px; height: 48px; left: 15px; bottom: 15px; }
+      .search-box input { width: 110px; }
+    }
+
+    .highlight {
+      background-color: rgba(244, 164, 96, 0.3);
+      transition: 0.2s;
+    }
   </style>
-
 </head>
-
 <body>
 
-  <!-- MAIN WRAPPER -->
-
-  <div class="menu-wrapper">
-
-    <div class="floating f1">☕</div>
-
-    <div class="floating f2">🍟</div>
-
-    <div class="floating f3">🍨</div>
-
-    <!-- HEADER -->
-
-    <div class="header">
-
-      <h1>☕ Ali Cafe 🍔 Guindy 🍨</h1>
-
-      <p>Freshly Brewed Happiness & Delicious Snacks</p>
-
-      <!-- CATEGORY NAVIGATION -->
-
-      <div class="category-nav">
-
-        <a href="#coffee-section" class="nav-btn">☕ Coffee</a>
-
-        <a href="#sandwich-section" class="nav-btn">🥪 Sandwich</a>
-
-        <a href="#shake-section" class="nav-btn">🥤 Shakes</a>
-
-        <a href="#icecream-section" class="nav-btn">🍨 Ice Cream</a>
-
+<div class="fixed-navbar">
+  <div class="nav-container">
+    <div class="nav-logo">☕ Ali Cafe <span>Guindy</span></div>
+    <div class="nav-controls">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search items...">
       </div>
-
-    </div>
-
-    <!-- MAIN CONTENT -->
-
-    <div class="menu-content">
-
-      <!-- LEFT SECTION -->
-
-      <div class="menu-section">
-
-        <h2 class="section-title">☕ Beverages</h2>
-
-        <img
-          src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=1200&auto=format&fit=crop"
-          class="food-image"
-          alt="Tea"
-          loading="lazy"
-        />
-
-        <div class="category">
-
-          <h3>Tea Varieties</h3>
-
-          <div class="menu-item">
-            <span>Classic Tea</span>
-            <span class="price">₹15</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Strong Tea</span>
-            <span class="price">₹20</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Ginger Tea</span>
-            <span class="price">₹20</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Cardamom Tea</span>
-            <span class="price">₹20</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Special Masala Tea</span>
-            <span class="price">₹25</span>
-          </div>
-
-        </div>
-
-        <!-- COFFEE -->
-
-        <div class="category" id="coffee-section">
-
-          <h3>Coffee</h3>
-
-          <div class="menu-item">
-            <span>Filter Coffee</span>
-            <span class="price">₹25</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Black Coffee</span>
-            <span class="price">₹20</span>
-          </div>
-
-        </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1577805947697-89e18249d767?q=80&w=1200&auto=format&fit=crop"
-          class="food-image"
-          alt="Milkshakes"
-          loading="lazy"
-        />
-
-        <!-- SHAKES -->
-
-        <div class="category" id="shake-section">
-
-          <h3>Milkshakes</h3>
-
-          <div class="menu-item">
-            <span>Chocolate Shake</span>
-            <span class="price">₹80</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Vanilla Shake</span>
-            <span class="price">₹70</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Strawberry Shake</span>
-            <span class="price">₹80</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Oreo Shake</span>
-            <span class="price">₹90</span>
-          </div>
-
-        </div>
-
+      <div class="category-dropdown">
+        <select id="categoryFilterSelect">
+          <option value="all">📋 All Categories</option>
+          <option value="Tea Varieties">🍃 Tea</option>
+          <option value="Coffee">☕ Coffee</option>
+          <option value="Milkshakes">🥤 Shakes</option>
+          <option value="Snacks">🍟 Snacks</option>
+          <option value="Sandwich">🥪 Sandwich</option>
+          <option value="Ice Cream">🍨 Ice Cream</option>
+        </select>
       </div>
-
-      <!-- RIGHT SECTION -->
-
-      <div class="menu-section">
-
-        <h2 class="section-title">🍔 Snacks & Desserts</h2>
-
-        <img
-          src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?q=80&w=1200&auto=format&fit=crop"
-          class="food-image"
-          alt="Fries"
-          loading="lazy"
-        />
-
-        <div class="category">
-
-          <h3>Snacks</h3>
-
-          <div class="menu-item">
-            <span>French Fries</span>
-            <span class="price">₹70</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Peri Peri Fries</span>
-            <span class="price">₹80</span>
-          </div>
-
-        </div>
-
-        <!-- SANDWICH -->
-
-        <div class="category" id="sandwich-section">
-
-          <h3>Sandwich</h3>
-
-          <div class="menu-item">
-            <span>Veg Sandwich</span>
-            <span class="price">₹60</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Egg Sandwich</span>
-            <span class="price">₹70</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Chicken Sandwich</span>
-            <span class="price">₹90</span>
-          </div>
-
-        </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=1200&auto=format&fit=crop"
-          class="food-image"
-          alt="Ice Cream"
-          loading="lazy"
-        />
-
-        <!-- ICECREAM -->
-
-        <div class="category" id="icecream-section">
-
-          <h3>Ice Cream</h3>
-
-          <div class="menu-item">
-            <span>Vanilla Scoop</span>
-            <span class="price">₹40</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Chocolate Scoop</span>
-            <span class="price">₹50</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Butterscotch</span>
-            <span class="price">₹50</span>
-          </div>
-
-          <div class="menu-item">
-            <span>Ice Cream Sundae</span>
-            <span class="price">₹90</span>
-          </div>
-
-        </div>
-
+      <div class="order-badge" id="openOrderPanelBtn">
+        🛒 Cart (<span id="cartCount">0</span>)
       </div>
-
     </div>
+  </div>
+</div>
 
-    <!-- FOOTER -->
+<div class="menu-wrapper">
+  <div class="floating f1">☕</div>
+  <div class="floating f2">🍟</div>
+  <div class="floating f3">🍨</div>
 
-    <div class="footer">
-
-      <p>☕ <strong>Ali Cafe</strong> - Freshly Brewed Happiness ☕</p>
-
-      <p>📍 Location: Guindy</p>
-
-      <p>📞 Contact: +91 9876543210</p>
-
-    </div>
-
+  <div class="header">
+    <h1>☕ Ali Cafe 🍔 Guindy 🍨</h1>
+    <p>Freshly Brewed Happiness & Delicious Snacks</p>
   </div>
 
-  <!-- GO TOP BUTTON -->
+  <div class="menu-content" id="menuContainer">
+    <!-- left section -->
+    <div class="menu-section">
+      <h2 class="section-title">☕ Beverages</h2>
+      <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=1200&auto=format&fit=crop" class="food-image" alt="Tea" loading="lazy">
+      
+      <div class="category" data-category="Tea Varieties">
+        <h3>Tea Varieties</h3>
+        <div class="menu-item" data-name="Classic Tea" data-price="15"><div class="item-info"><span class="item-name">Classic Tea</span><span class="price">₹15</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Strong Tea" data-price="20"><div class="item-info"><span class="item-name">Strong Tea</span><span class="price">₹20</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Ginger Tea" data-price="20"><div class="item-info"><span class="item-name">Ginger Tea</span><span class="price">₹20</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Cardamom Tea" data-price="20"><div class="item-info"><span class="item-name">Cardamom Tea</span><span class="price">₹20</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Special Masala Tea" data-price="25"><div class="item-info"><span class="item-name">Special Masala Tea</span><span class="price">₹25</span></div><button class="add-to-cart">+ Add</button></div>
+      </div>
 
-  <button class="top-btn" id="topBtn">
-    ↑
-  </button>
+      <div class="category" id="coffee-section" data-category="Coffee">
+        <h3>Coffee</h3>
+        <div class="menu-item" data-name="Filter Coffee" data-price="25"><div class="item-info"><span class="item-name">Filter Coffee</span><span class="price">₹25</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Black Coffee" data-price="20"><div class="item-info"><span class="item-name">Black Coffee</span><span class="price">₹20</span></div><button class="add-to-cart">+ Add</button></div>
+      </div>
 
-  <script>
+      <img src="https://images.unsplash.com/photo-1577805947697-89e18249d767?q=80&w=1200&auto=format&fit=crop" class="food-image" alt="Milkshakes" loading="lazy">
+      
+      <div class="category" id="shake-section" data-category="Milkshakes">
+        <h3>Milkshakes</h3>
+        <div class="menu-item" data-name="Chocolate Shake" data-price="80"><div class="item-info"><span class="item-name">Chocolate Shake</span><span class="price">₹80</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Vanilla Shake" data-price="70"><div class="item-info"><span class="item-name">Vanilla Shake</span><span class="price">₹70</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Strawberry Shake" data-price="80"><div class="item-info"><span class="item-name">Strawberry Shake</span><span class="price">₹80</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Oreo Shake" data-price="90"><div class="item-info"><span class="item-name">Oreo Shake</span><span class="price">₹90</span></div><button class="add-to-cart">+ Add</button></div>
+      </div>
+    </div>
 
-    // GLOW EFFECT
+    <!-- right section -->
+    <div class="menu-section">
+      <h2 class="section-title">🍔 Snacks & Desserts</h2>
+      <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?q=80&w=1200&auto=format&fit=crop" class="food-image" alt="Fries" loading="lazy">
+      
+      <div class="category" data-category="Snacks">
+        <h3>Snacks</h3>
+        <div class="menu-item" data-name="French Fries" data-price="70"><div class="item-info"><span class="item-name">French Fries</span><span class="price">₹70</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Peri Peri Fries" data-price="80"><div class="item-info"><span class="item-name">Peri Peri Fries</span><span class="price">₹80</span></div><button class="add-to-cart">+ Add</button></div>
+      </div>
 
-    const sections = document.querySelectorAll(".menu-section");
+      <div class="category" id="sandwich-section" data-category="Sandwich">
+        <h3>Sandwich</h3>
+        <div class="menu-item" data-name="Veg Sandwich" data-price="60"><div class="item-info"><span class="item-name">Veg Sandwich</span><span class="price">₹60</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Egg Sandwich" data-price="70"><div class="item-info"><span class="item-name">Egg Sandwich</span><span class="price">₹70</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Chicken Sandwich" data-price="90"><div class="item-info"><span class="item-name">Chicken Sandwich</span><span class="price">₹90</span></div><button class="add-to-cart">+ Add</button></div>
+      </div>
 
-    sections.forEach(section => {
+      <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=1200&auto=format&fit=crop" class="food-image" alt="Ice Cream" loading="lazy">
+      
+      <div class="category" id="icecream-section" data-category="Ice Cream">
+        <h3>Ice Cream</h3>
+        <div class="menu-item" data-name="Vanilla Scoop" data-price="40"><div class="item-info"><span class="item-name">Vanilla Scoop</span><span class="price">₹40</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Chocolate Scoop" data-price="50"><div class="item-info"><span class="item-name">Chocolate Scoop</span><span class="price">₹50</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Butterscotch" data-price="50"><div class="item-info"><span class="item-name">Butterscotch</span><span class="price">₹50</span></div><button class="add-to-cart">+ Add</button></div>
+        <div class="menu-item" data-name="Ice Cream Sundae" data-price="90"><div class="item-info"><span class="item-name">Ice Cream Sundae</span><span class="price">₹90</span></div><button class="add-to-cart">+ Add</button></div>
+      </div>
+    </div>
+  </div>
 
-      section.addEventListener("mousemove", (e) => {
+  <div class="footer">
+    <p>☕ <strong>Ali Cafe</strong> - Freshly Brewed Happiness ☕</p>
+    <p>📍 Location: Guindy</p>
+    <p>📞 Contact: +91 9876543210</p>
+  </div>
+</div>
 
-        const rect = section.getBoundingClientRect();
+<!-- Order Panel -->
+<div class="order-panel" id="orderPanel">
+  <div class="order-header" id="toggleOrderPanel">
+    <span>📋 Your Order List</span>
+    <span style="font-size:1.2rem;">🛒</span>
+  </div>
+  <div class="order-list" id="orderListContainer">
+    <div class="empty-msg">No items added yet.<br>Click +Add to order!</div>
+  </div>
+</div>
 
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+<button class="top-btn" id="topBtn">↑</button>
 
-        section.style.background = `
-          radial-gradient(circle at ${x}px ${y}px,
-          rgba(255,255,255,0.95),
-          rgba(255,255,255,0.65))
-        `;
-      });
+<script>
+  // ---------- Cart state ----------
+  let cart = []; // { name, price }
 
-      section.addEventListener("mouseleave", () => {
+  // DOM elements
+  const cartCountSpan = document.getElementById('cartCount');
+  const orderListContainer = document.getElementById('orderListContainer');
+  const openOrderPanelBtn = document.getElementById('openOrderPanelBtn');
 
-        section.style.background = "rgba(255,255,255,0.7)";
-      });
-
+  // Update cart UI (order panel + badge)
+  function updateCartUI() {
+    cartCountSpan.innerText = cart.length;
+    if (!orderListContainer) return;
+    if (cart.length === 0) {
+      orderListContainer.innerHTML = '<div class="empty-msg">No items added yet.<br>Click +Add to order!</div>';
+      return;
+    }
+    let html = '';
+    let total = 0;
+    cart.forEach((item, idx) => {
+      total += item.price;
+      html += `
+        <div class="order-item">
+          <div class="order-item-details">${item.name} <span style="font-weight:700;">₹${item.price}</span></div>
+          <button class="remove-item" data-index="${idx}">Remove</button>
+        </div>
+      `;
     });
-
-    // ACTIVE CATEGORY BUTTON
-
-    const navButtons = document.querySelectorAll(".nav-btn");
-
-    navButtons.forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        navButtons.forEach(btn => {
-          btn.classList.remove("active-nav");
-        });
-
-        button.classList.add("active-nav");
-
+    html += `<div class="total-row"><span>💰 Total Amount:</span><span>₹${total}</span></div>`;
+    orderListContainer.innerHTML = html;
+    // attach remove listeners
+    document.querySelectorAll('.remove-item').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.getAttribute('data-index'));
+        if (!isNaN(idx)) {
+          cart.splice(idx, 1);
+          updateCartUI();
+        }
       });
-
     });
+  }
 
-    // GO TOP BUTTON
+  // add item to cart
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    updateCartUI();
+    // flash feedback
+    const badge = document.getElementById('openOrderPanelBtn');
+    if (badge) {
+      badge.style.transform = 'scale(1.05)';
+      setTimeout(() => { badge.style.transform = ''; }, 200);
+    }
+  }
 
-    const topBtn = document.getElementById("topBtn");
+  // Attach event listeners to all Add buttons (dynamic later)
+  function bindAddButtons() {
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.removeEventListener('click', addHandler);
+      btn.addEventListener('click', addHandler);
+    });
+  }
 
-    window.addEventListener("scroll", () => {
-
-      if(window.scrollY > 400){
-
-        topBtn.classList.add("show");
-
-      }else{
-
-        topBtn.classList.remove("show");
-
+  function addHandler(e) {
+    e.stopPropagation();
+    const menuItemDiv = this.closest('.menu-item');
+    if (menuItemDiv) {
+      const name = menuItemDiv.getAttribute('data-name');
+      const priceAttr = menuItemDiv.getAttribute('data-price');
+      if (name && priceAttr) {
+        addToCart(name, parseInt(priceAttr));
       }
+    }
+  }
 
+  // Search & Category Filter (live filtering) - preserve original visibility
+  const searchInput = document.getElementById('searchInput');
+  const categorySelect = document.getElementById('categoryFilterSelect');
+  const allMenuItems = Array.from(document.querySelectorAll('.menu-item'));
+
+  function filterMenu() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const selectedCat = categorySelect.value;
+
+    allMenuItems.forEach(item => {
+      const itemNameElem = item.querySelector('.item-name');
+      const itemName = itemNameElem ? itemNameElem.innerText.toLowerCase() : '';
+      const parentCategoryDiv = item.closest('.category');
+      const itemCategory = parentCategoryDiv ? parentCategoryDiv.getAttribute('data-category') : '';
+      
+      let matchesSearch = searchTerm === '' || itemName.includes(searchTerm);
+      let matchesCategory = (selectedCat === 'all') || (itemCategory === selectedCat);
+      
+      if (matchesSearch && matchesCategory) {
+        item.style.display = 'flex';
+        // optional highlight
+      } else {
+        item.style.display = 'none';
+      }
     });
-
-    topBtn.addEventListener("click", () => {
-
-      window.scrollTo({
-        top:0,
-        behavior:"smooth"
-      });
-
+    // also hide entire category block if no visible items? (cosmetic but fine)
+    document.querySelectorAll('.category').forEach(cat => {
+      const visibleItems = Array.from(cat.querySelectorAll('.menu-item')).some(i => i.style.display !== 'none');
+      if (!visibleItems && cat.querySelectorAll('.menu-item').length > 0) cat.style.opacity = '0.5';
+      else cat.style.opacity = '1';
     });
+  }
 
-  </script>
+  searchInput.addEventListener('input', filterMenu);
+  categorySelect.addEventListener('change', filterMenu);
 
+  // active nav highlight + smooth scroll but also keep category filter reset optional 
+  const navBtns = document.querySelectorAll(".nav-btn");
+  navBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      navBtns.forEach(b => b.classList.remove("active-nav"));
+      btn.classList.add("active-nav");
+    });
+  });
+
+  // order panel toggle (click header or cart badge)
+  const orderPanel = document.getElementById('orderPanel');
+  const toggleBtn = document.getElementById('toggleOrderPanel');
+  function togglePanel() {
+    if (orderPanel.style.transform === 'scale(0.95)' || !orderPanel.style.transform || orderPanel.style.transform === 'scale(1)') {
+      orderPanel.style.transform = 'scale(0.95)';
+      orderPanel.style.opacity = '0';
+      orderPanel.style.visibility = 'hidden';
+      setTimeout(() => {
+        if (orderPanel.style.opacity === '0') orderPanel.style.display = 'none';
+      }, 200);
+    } else {
+      orderPanel.style.display = 'block';
+      setTimeout(() => {
+        orderPanel.style.transform = 'scale(1)';
+        orderPanel.style.opacity = '1';
+        orderPanel.style.visibility = 'visible';
+      }, 10);
+    }
+  }
+  function showPanel() {
+    orderPanel.style.display = 'block';
+    setTimeout(() => {
+      orderPanel.style.transform = 'scale(1)';
+      orderPanel.style.opacity = '1';
+      orderPanel.style.visibility = 'visible';
+    }, 10);
+  }
+  if (toggleBtn) toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePanel(); });
+  openOrderPanelBtn.addEventListener('click', (e) => { e.preventDefault(); showPanel(); });
+  // initial style
+  orderPanel.style.transform = 'scale(0.95)';
+  orderPanel.style.opacity = '0';
+  orderPanel.style.visibility = 'hidden';
+  orderPanel.style.display = 'none';
+  orderPanel.style.transition = '0.2s ease';
+
+  // glow effect original style keep
+  const sections = document.querySelectorAll(".menu-section");
+  sections.forEach(section => {
+    section.addEventListener("mousemove", (e) => {
+      const rect = section.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      section.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.95), rgba(255,255,255,0.65))`;
+    });
+    section.addEventListener("mouseleave", () => { section.style.background = "rgba(255,255,255,0.7)"; });
+  });
+
+  // Top button
+  const topBtn = document.getElementById("topBtn");
+  window.addEventListener("scroll", () => { if(window.scrollY > 400) topBtn.classList.add("show"); else topBtn.classList.remove("show"); });
+  topBtn.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+  bindAddButtons();
+  updateCartUI();
+  // ensure after filter re-attach add handlers? but bind runs once, never re-attach needed as elements static.
+  // however after filter no re-render but buttons remain same, fine.
+  // re-run on dynamic? no dynamic removal.
+  filterMenu();
+</script>
 </body>
 </html>

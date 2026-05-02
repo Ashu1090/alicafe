@@ -263,11 +263,36 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .item-name {
       font-size: 0.95rem;
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .price {
+      color: #4a1d08;
+      font-weight: 700;
+      background: #f6dfc7;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .add-to-cart {
+      background: #4a1d08;
+      color: white;
+      border: none;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      flex: 0 0 auto;
     }
 
     .price {
@@ -445,20 +470,27 @@
 
     @media (max-width: 700px) {
       .menu-item {
-        flex-direction: column;
-        align-items: stretch;
+        flex-wrap: nowrap;
       }
       .item-info {
-        width: 100%;
+        flex: 1 1 auto;
+        min-width: 0;
         justify-content: space-between;
-        margin-bottom: 10px;
+        gap: 10px;
+        margin-bottom: 0;
+      }
+      .item-name {
+        font-size: 0.9rem;
+      }
+      .price {
+        font-size: 0.78rem;
       }
       .add-to-cart {
         width: auto;
-        align-self: flex-start;
+        align-self: center;
         padding: 6px 12px;
-        font-size: 0.75rem;
-        margin-top: 6px;
+        font-size: 0.72rem;
+        margin-top: 0;
       }
       .category-image {
         height: 180px;

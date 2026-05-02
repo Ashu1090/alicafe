@@ -107,7 +107,7 @@
     }
 
     .category-dropdown select {
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 40px;
       border: none;
       font-family: 'Poppins', sans-serif;
@@ -115,20 +115,23 @@
       background: white;
       color: #4a1d08;
       cursor: pointer;
-      font-size: 0.7rem;
+      font-size: 0.8rem;
+      min-width: 100px;
     }
 
     .order-badge {
       background: #f4a460;
       color: #4a1d08;
       border-radius: 40px;
-      padding: 5px 12px;
+      padding: 8px 16px;
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      min-width: 92px;
+      justify-content: center;
     }
 
     /* HERO SECTION - FIXED VISIBILITY */
@@ -223,6 +226,13 @@
       border-radius: 22px;
       margin-bottom: 20px;
       transition: 0.3s;
+    }
+
+    .category-image {
+      height: 220px;
+      display: block;
+      margin-bottom: 18px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
     }
 
     .category-group {
@@ -409,21 +419,79 @@
     }
 
     /* RESPONSIVE FIXES - ULTRA SMALL */
+    @media (max-width: 850px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .nav-controls {
+        justify-content: space-between;
+        width: 100%;
+      }
+      .search-box,
+      .category-dropdown,
+      .order-badge {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .category-dropdown select,
+      .search-box input {
+        width: 100%;
+      }
+      .order-badge {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .menu-item {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .item-info {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .add-to-cart {
+        width: auto;
+        align-self: flex-start;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        margin-top: 6px;
+      }
+      .category-image {
+        height: 180px;
+      }
+    }
+
     @media (max-width: 550px) {
       body {
-        padding-top: 105px;
+        padding-top: 120px;
       }
       .fixed-navbar {
         padding: 8px 12px;
       }
+      .nav-controls {
+        gap: 10px;
+      }
       .hero-header {
         padding: 14px 12px 18px;
+        margin-top: 8px;
       }
       .hero-header h1 {
         font-size: 1.3rem;
       }
       .hero-header p {
         font-size: 0.7rem;
+      }
+      .category-dropdown select {
+        padding: 9px 14px;
+        font-size: 0.82rem;
+      }
+      .order-badge {
+        padding: 9px 15px;
+        font-size: 0.82rem;
       }
       .menu-content {
         padding: 15px;
@@ -437,7 +505,7 @@
       .category-group h3 {
         font-size: 1rem;
       }
-      .food-image {
+      .category-image {
         height: 150px;
       }
       .item-name {
@@ -447,13 +515,39 @@
         font-size: 0.75rem;
       }
       .add-to-cart {
-        padding: 4px 10px;
-        font-size: 0.65rem;
+        padding: 5px 10px;
+        font-size: 0.72rem;
       }
       .order-panel {
         width: 290px;
         right: 10px;
         bottom: 10px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding-top: 135px;
+      }
+      .hero-header {
+        margin-top: 10px;
+      }
+      .add-to-cart {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+      }
+    }
+
+    @media (max-width: 320px) {
+      body {
+        padding-top: 150px;
+      }
+      .hero-header {
+        margin-top: 12px;
+      }
+      .add-to-cart {
+        padding: 4px 10px;
+        font-size: 0.68rem;
       }
     }
 
@@ -471,12 +565,14 @@
         width: 75px;
       }
       .category-dropdown select {
-        font-size: 0.65rem;
-        padding: 4px 8px;
+        font-size: 0.72rem;
+        padding: 6px 10px;
+        min-width: 88px;
       }
       .order-badge {
-        font-size: 0.65rem;
-        padding: 4px 8px;
+        font-size: 0.72rem;
+        padding: 6px 10px;
+        min-width: 88px;
       }
       .active-category-banner {
         font-size: 0.75rem;
@@ -577,10 +673,19 @@
     { name: "Ice Cream Sundae", price: 90, category: "Ice Cream", section: "Snacks & Desserts" }
   ];
 
-  // Cart state: { name, price, quantity }
-  let cart = [];
+  const categoryImages = {
+    "Tea Varieties": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format",
+    "Coffee": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=600&auto=format",
+    "Milkshakes": "https://images.unsplash.com/photo-1577805947697-89e18249d767?q=80&w=600&auto=format",
+    "Snacks": "https://images.unsplash.com/photo-1639024471283-03518883512d?q=80&w=600&auto=format",
+    "Sandwich": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2FuZHdpY2h8ZW58MHx8MHx8fDA%3D",
+    "Ice Cream": "https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?q=80&w=600&auto=format"
+  };
 
-  // DOM elements
+  function getCategoryImage(category) {
+    return categoryImages[category] || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=600&auto=format";
+  }
+
   const menuContainer = document.getElementById('menuContainer');
   const categorySelect = document.getElementById('categoryFilterSelect');
   const searchInput = document.getElementById('searchInput');
@@ -733,12 +838,14 @@
       });
 
       let html = `<div class="menu-section">
-        <h2 class="section-title">${sectionIcon} ${sectionTitle}</h2>
-        <img src="${sectionTitle === 'Beverages' ? 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=600&auto=format' : 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?q=80&w=600&auto=format'}" class="food-image" alt="${sectionTitle}">`;
+        <h2 class="section-title">${sectionIcon} ${sectionTitle}</h2>`;
       
       for (const [catName, catItems] of Object.entries(grouped)) {
+        const catImage = getCategoryImage(catName);
         html += `<div class="category-group" data-category="${catName}">
-          <h3>${catName}</h3>`;
+          <h3>${catName}</h3>
+          <img src="${catImage}" loading="lazy" class="food-image category-image" alt="${catName}">
+        `;
         catItems.forEach(item => {
           html += `
             <div class="menu-item" data-name="${item.name}" data-price="${item.price}">
